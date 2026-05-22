@@ -8,3 +8,5 @@ const main = () => {
         console.log(`app listing on port ${port}`);
     })
 }
+
+main();
