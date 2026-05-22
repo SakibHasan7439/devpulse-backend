@@ -34,6 +34,7 @@ const registerUserIntoDB = async(payload: {
 };
 
 const loginUserIntoDB = async(payload: {email:string, password:string}) => {
+      console.log("access token", config.jwt_secret);
     const {email, password} = payload;
 
     const result = await pool.query(`
@@ -63,7 +64,17 @@ const loginUserIntoDB = async(payload: {email:string, password:string}) => {
         expiresIn: '3d'
     });
 
-    return accessToken;
+    return {
+        token: accessToken,
+        user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            created_at: user.created_at,
+            updated_at: user.updated_at
+        }
+    };
 }
 
 export const authService = {

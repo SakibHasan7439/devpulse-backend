@@ -10,7 +10,7 @@ const registerUser = async(req:Request, res:Response) => {
         sendResponse(res, {
             statusCode: 201,
             success: true,
-            message: 'User created successfully',
+            message: 'User registered successfully',
             data: result
         })
     } catch (error: any) {
@@ -26,11 +26,11 @@ const registerUser = async(req:Request, res:Response) => {
 const loginUser = async(req:Request, res:Response) => {
     try {
         const result = await authService.loginUserIntoDB(req.body);
-
+        console.log(result);
         sendResponse(res, {
             statusCode: 200,
             success: true,
-            message: "User logged in successfully",
+            message: "Login successful",
             data: result
         })
 
@@ -39,8 +39,7 @@ const loginUser = async(req:Request, res:Response) => {
             statusCode: 500,
             success: false,
             message: error.message
-        }
-
+            }
         )
     }
 }
