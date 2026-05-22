@@ -3,8 +3,9 @@ import cors from 'cors';
 
 import { initDB } from "./db";
 import globalErrorHandler from "./modules/middleware/globalErrorHandler";
-import { authRouter } from "./modules/auth/auth.route";
+import { authRoute, authRouter } from "./modules/auth/auth.route";
 import cookieParser from "cookie-parser";
+import { IssueRoute } from "./modules/issues/issues.route";
 
 const app: Application = express();
 
@@ -18,15 +19,16 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(cors(corsOption));
 
-// app.get('/user', (req: Request, res: Response) => {
-//   res.status(200).json({
-//     "message": "Express server is running!",
-//     "author": "Sakib Hasan"
-//   })
-// })
+app.get('/', (req: Request, res: Response) => {
+  res.status(200).json({
+    "message": "Express server is running!",
+    "author": "Sakib Hasan"
+  })
+})
 
 
-app.use('/api/auth', authRouter);
+app.use('/api/auth', authRoute);
+app.use('/api', IssueRoute);
 
 app.use(globalErrorHandler);
 export default app;

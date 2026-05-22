@@ -6,4 +6,4 @@ const route = Router();
 route.post('/signup', authController.registerUser);
 route.post('/login', authController.loginUser);
 
-export const authRouter = route;
+export const authRoute = route;

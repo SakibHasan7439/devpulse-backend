@@ -4,3 +4,8 @@ export const USER_ROLE = {
 } as const;
 
 export type ROLES = "contributor" | "maintainer";
+
+export const ISSUE_TYPE = {
+    bug: "bug",
+    feature: "feature"
+}
