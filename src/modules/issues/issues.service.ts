@@ -1,8 +1,6 @@
 import { IIssues } from "./issues.interface"
 import { ISSUE_TYPE } from "../../types";
 import { pool } from "../../db";
-import { Request, Response } from "express";
-import sendResponse from "../utils/response";
 
 
 const createIssuesIntoDB = async(payload: IIssues) => {
