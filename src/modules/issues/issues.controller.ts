@@ -50,7 +50,12 @@ const getSingleIssue = async(req: Request, res: Response) => {
     try {
         const {id} = req.params;
 
-        // const result = await 
+        const result = await issuesService.getSingleIssueFromDB(id as string);
+        sendResponse(res, {
+            statusCode:200,
+            success:true, 
+            data: result
+        })
     } catch (error:any) {
         sendResponse(res, {
             statusCode:500,

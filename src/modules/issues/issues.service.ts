@@ -1,6 +1,8 @@
 import { IIssues } from "./issues.interface"
 import { ISSUE_TYPE } from "../../types";
 import { pool } from "../../db";
+import { Request, Response } from "express";
+import sendResponse from "../utils/response";
 
 
 const createIssuesIntoDB = async(payload: IIssues) => {
@@ -44,7 +46,35 @@ const getAllIssuesFromDB = async() => {
     return data;
 }
 
+const getSingleIssueFromDB = async(id:string) => {
+
+    const result = await pool.query(`
+       SELECT * FROM issues
+       WHERE id=$1 
+    `, [id]);
+
+    if(result.rows.length === 0){
+        throw new Error("Issue not found!");
+    }
+
+    const reporter = await pool.query(`
+        SELECT id, name, role 
+        FROM users
+        WHERE id=$1 
+    `, [result.rows[0].reporter_id]);   
+
+    const {reporter_id, ...rest} = result.rows[0];
+
+    const data = {
+        ...rest,
+        reporter: reporter.rows[0]
+    }
+
+    return data;
+}
+
 export const issuesService = {
     createIssuesIntoDB,
-    getAllIssuesFromDB
+    getAllIssuesFromDB,
+    getSingleIssueFromDB
 }
