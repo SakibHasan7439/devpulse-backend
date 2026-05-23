@@ -67,7 +67,25 @@ const getSingleIssue = async(req: Request, res: Response) => {
 
 const updateIssues = async(req: Request, res: Response) => {
     try {
-        
+        const { id } = req.params;
+        const user = req.user;
+
+        const result = await issuesService.updateIssueIntoDB(id as string, req.body, user)
+        if(result.rows.length === 0){
+            sendResponse(res, {
+                statusCode: 404,
+                success: false,
+                message: 'issue not found!'
+            })
+        }
+
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: 'updated successfully',
+            data: result.rows[0]
+        })
+
     } catch (error:any) {
         sendResponse(res, {
             statusCode:500,

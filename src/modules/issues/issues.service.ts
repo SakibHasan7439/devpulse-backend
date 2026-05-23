@@ -73,6 +73,46 @@ const getSingleIssueFromDB = async(id:string) => {
     return data;
 }
 
+const updateIssueIntoDB = async(
+    id:string,
+    payload: IIssues,
+    requester: {id: string, role: string}
+    ) => {
+    
+        const {title, description, type} = payload;
+        const getIssue = await pool.query(`
+            SELECT * FROM issues
+            WHERE id=$1
+        `, [id]);
+
+        if(getIssue.rows.length === 0){
+            throw new Error("Issue not found!");
+        }
+
+        const issue = getIssue.rows[0];
+
+        if(requester.role === "contributor"){
+            if(issue.reporter_id !== requester.id){
+                throw new Error("Unauthorized Access!");
+            }
+            if(issue.status !== "open"){
+                throw new Error("Updated Cannot be done for this issue!");
+            }
+        }
+
+        const result = await pool.query(`
+           UPDATE issues
+           SET title = COALESCE($1, title),
+               description = COALESCE($2, description),
+               type = COALESCE($3, type),
+               updated_at = NOW()
+            WHERE id = $4
+            RETURNING *
+        `, [title, description, type,id]);
+
+        return result;
+}
+
 const deleteIssueFromDB = async(id:string) => {
     const result = await pool.query(`
        DELETE FROM issues
@@ -86,5 +126,6 @@ export const issuesService = {
     createIssuesIntoDB,
     getAllIssuesFromDB,
     getSingleIssueFromDB,
+    updateIssueIntoDB,
     deleteIssueFromDB
 }
