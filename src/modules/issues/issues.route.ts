@@ -7,7 +7,7 @@ const route = Router();
 
 // protected routes
 route.post('/issues', authMiddleware(USER_ROLE.contributor, USER_ROLE.maintainer), issuesController.createIssues);
-route.get('/issues/:id', authMiddleware(USER_ROLE.contributor, USER_ROLE.maintainer), issuesController.updateIssues);
+route.put('/issues/:id', authMiddleware(USER_ROLE.contributor, USER_ROLE.maintainer), issuesController.updateIssues);
 route.delete('/issues/:id',authMiddleware(USER_ROLE.contributor, USER_ROLE.maintainer), issuesController.deleteIssues);
 
 // public routes
