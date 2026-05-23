@@ -9,6 +9,6 @@ route.post('/issues', authMiddleware(USER_ROLE.contributor, USER_ROLE.maintainer
 route.get('/issues', issuesController.getAllIssues);
 route.get('/issues/:id', issuesController.getSingleIssue);
 route.get('/issues/:id', issuesController.updateIssues);
-route.delete('/issues/:id', issuesController.deleteIssues);
+route.delete('/issues/:id',authMiddleware(USER_ROLE.contributor, USER_ROLE.maintainer), issuesController.deleteIssues);
 
 export const IssueRoute = route;

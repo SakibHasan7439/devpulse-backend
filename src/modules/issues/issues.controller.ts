@@ -79,6 +79,23 @@ const updateIssues = async(req: Request, res: Response) => {
 
 const deleteIssues = async(req: Request, res: Response) => {
     try {
+        const { id } = req.params;
+        const user = req.user;
+        console.log(user)
+        if(user.role !== 'maintainer'){
+            sendResponse(res, {
+                statusCode: 403,
+                success: false,
+                message: 'Unauthorized Access!'
+            })
+        }
+
+        const result = await issuesService.deleteIssueFromDB(id as string);
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: 'issue deleted successfully'
+        })
         
     } catch (error:any) {
         sendResponse(res, {
