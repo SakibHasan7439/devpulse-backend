@@ -30,7 +30,13 @@ const createIssues = async(req: Request, res: Response) => {
 
 const getAllIssues = async(req: Request, res: Response) => {
     try {
-        
+        const result = await issuesService.getAllIssuesFromDB();
+        sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: 'issues fetched successfully',
+            data: result
+        })
     } catch (error:any) {
         sendResponse(res, {
             statusCode:500,
@@ -42,7 +48,9 @@ const getAllIssues = async(req: Request, res: Response) => {
 
 const getSingleIssue = async(req: Request, res: Response) => {
     try {
-        
+        const {id} = req.params;
+
+        // const result = await 
     } catch (error:any) {
         sendResponse(res, {
             statusCode:500,
